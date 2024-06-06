@@ -1,9 +1,11 @@
 name: Teste e Implantação
+
 on:
   push:
     branches:
       - main
-jobs:
+j
+obs:
   teste:
     runs-on: ubuntu-latest
     steps:
