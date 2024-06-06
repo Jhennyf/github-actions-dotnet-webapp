@@ -1,30 +1,23 @@
-name: PR-Validation
-
-on: [pull_request]
-
+name: Teste e Implantação
+on:
+  push:
+    branches:
+      - main
 jobs:
-  Build:
+  teste:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 'Checkout Github Action'
-        uses: actions/checkout@master
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
-
-      - name: Setup Node
-        uses: actions/setup-node@v2.5.1
-        with:
-          node-version: 10.16.3
-
-      - name: Install dependencies in client app
-        working-directory: src/Tailwind.Traders.Web/ClientApp
+      - name: Checkout do Código
+        uses: actions/checkout@v2
+      - name: Configurar Ambiente
         run: npm install
-        
-      - name: Build and publish with dotnet
-        working-directory: src/Tailwind.Traders.Web
-        run: |
-          dotnet build --configuration Release
+      - name: Executar Testes
+        run: npm test
+  implantação:
+    runs-on: ubuntu-latest
+    needs: teste
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v2
+      - name: Implantação no Ambiente de Produção
+        run: ./implantar.sh
