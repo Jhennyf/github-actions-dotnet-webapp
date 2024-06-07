@@ -30,7 +30,7 @@ jobs:
 
     - name: Build and publish with dotnet
       working-directory: src/Tailwind.Traders.Web
-      run: dotnet build --configuration Release
+      run: dotnet build **/*.csproj --no-restore
 
   scheduled-task:
     runs-on: ubuntu-latest
