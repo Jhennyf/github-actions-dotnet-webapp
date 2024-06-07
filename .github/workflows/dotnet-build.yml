@@ -28,7 +28,7 @@ jobs:
     - name: Run custom script
       run: |
         echo "Running custom script on push..."
-        /workspaces/github-actions-dotnet-webapp/github4women/custom-script.sh
+        ./github4women/custom-script.sh
 
   scheduled-task:
     runs-on: ubuntu-latest
