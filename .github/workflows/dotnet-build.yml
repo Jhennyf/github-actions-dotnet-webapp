@@ -19,18 +19,17 @@ jobs:
       with:
         dotnet-version: '5.0.x'
 
-    - name: Setup Node
-      uses: actions/setup-node@v2.5.1
-      with:
-        node-version: 10.16.3
+    - name: Restore dependencies
+      run: dotnet restore **/*.csproj
 
-    - name: Install dependencies in client app
-      working-directory: src/Tailwind.Traders.Web/ClientApp
-      run: npm install
-
-    - name: Build and publish with dotnet
-      working-directory: src/Tailwind.Traders.Web
+    - name: Build the app
       run: dotnet build **/*.csproj --no-restore
+
+    - name: Run custom script
+      run: |
+        echo "Running custom script on push..."
+        # Adicione seu script personalizado aqui
+        ./custom-script.sh
 
   scheduled-task:
     runs-on: ubuntu-latest
