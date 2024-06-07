@@ -1,25 +1,44 @@
-name: Teste e Implantação
+name: PR-Validation
 
 on:
   push:
     branches:
       - main
-j
-obs:
-  teste:
+  schedule:
+    - cron: '0 * * * *' # Executa a cada hora
+
+jobs:
+  build-on-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do Código
-        uses: actions/checkout@v2
-      - name: Configurar Ambiente
-        run: npm install
-      - name: Executar Testes
-        run: npm test
-  implantação:
+    - name: Checkout Github Action
+      uses: actions/checkout@v2
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Setup Node
+      uses: actions/setup-node@v2.5.1
+      with:
+        node-version: 10.16.3
+
+    - name: Install dependencies in client app
+      working-directory: src/Tailwind.Traders.Web/ClientApp
+      run: npm install
+
+    - name: Build and publish with dotnet
+      working-directory: src/Tailwind.Traders.Web
+      run: dotnet build --configuration Release
+
+  scheduled-task:
     runs-on: ubuntu-latest
-    needs: teste
     steps:
-      - name: Checkout do Código
-        uses: actions/checkout@v2
-      - name: Implantação no Ambiente de Produção
-        run: ./implantar.sh
+    - name: Checkout Github Action
+      uses: actions/checkout@v2
+
+    - name: Run simple task
+      run: |
+        echo "Running scheduled task..."
+        ls -la
